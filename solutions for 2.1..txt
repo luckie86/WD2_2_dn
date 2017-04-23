@@ -1,0 +1,62 @@
+Q:What order (Invoice) was the most expensive? 
+A:Invoice id 404 was the most expensive - 25,86
+CODE:
+SELECT * FROM Invoice
+ORDER BY Total DESC;
+----------------------------------------------------
+Q:Which one was the cheapest? 
+A:55 Orders were the cheapest (0,99)
+CODE:
+SELECT * FROM Invoice
+WHERE Total = 0.99
+ORDER BY Invoice.InvoiceId;
+----------------------------------------------------
+Q:Which city (BillingCity) has the most orders? 
+A:Berlin, London, Mountain View, Paris, Prague, Sao Paulo have the most orders(14)
+CODE:
+SELECT COUNT(*), Invoice.BillingCity FROM Invoice
+GROUP BY Invoice.BillingCity
+ORDER BY COUNT(*) DESC;
+----------------------------------------------------
+Q:Calculate (or count) how many tracks have this MediaType: Protected AAC audio file. 
+A:237 Tracks have this type
+CODE:
+SELECT COUNT(*) FROM Track
+JOIN MediaType ON MediaType.MediaTypeId = Track.MediaTypeId
+WHERE MediaType.Name = 'Protected AAC audio file';
+----------------------------------------------------
+Q:Find out which Artist has the most albums? (hint: check ORDER BY)
+A:Iron Maiden has the most albums (21)
+CODE:
+SELECT Artist.Name, COUNT(*)
+FROM Album
+JOIN Artist ON Artist.ArtistId=Album.ArtistId
+GROUP BY Artist.ArtistId
+ORDER BY COUNT(*) DESC;
+----------------------------------------------------
+Q:What genre has the most tracks?
+A:Rock has the most tracks(1297)
+CODE:
+SELECT COUNT(*), Genre.Name 
+FROM Genre
+JOIN Track ON Track.GenreId = Genre.GenreId
+GROUP BY Genre.Name
+ORDER BY COUNT(*) DESC;
+----------------------------------------------------
+Q:Which customer spent the most money so far?
+A:Helena Holy has spent the most (49,62)
+CODE:
+SELECT Customer.FirstName, Customer.LastName, SUM(Invoice.Total)
+FROM Customer
+JOIN Invoice ON Invoice.CustomerId = Customer.CustomerId
+GROUP BY Customer.CustomerId
+ORDER BY Invoice.Total DESC;
+----------------------------------------------------
+Q:What songs were bought with each order? 
+A:/
+CODE:
+SELECT Invoice.InvoiceId, Track.Name
+FROM Invoice
+JOIN InvoiceLine ON InvoiceLine.InvoiceId = Invoice.InvoiceId
+JOIN Track ON Track.TrackId = InvoiceLine.TrackId; 
+----------------------------------------------------
